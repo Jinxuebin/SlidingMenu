@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomAboveView" >
+        <!--上半部分的背景图片-->
+        <attr name="sm_backgroundimg" format="reference"/>
+        <!--用户昵称-->
+        <attr name="sm_nickname" format="string"/>
+        <!--画笔颜色-->
+        <attr name="sm_nicknameColor" format="color"/>
+        <!--画笔大小-->
+        <attr name="sm_font_size" format="dimension"/>
+
+        <!--用户头像-->
+
+        <!--原始头像图片-->
+        <attr name="sm_photo_src" format="reference"/>
+        <!--头像样式-->
+        <attr name="sm_format" format="enum">
+            <!--圆形-->
+            <enum name="sm_circle" value="0"/>
+            <!--圆角矩形，圆角半径设为0则为正方形-->
+            <enum name="sm_round_rectangle" value="1"/>
+        </attr>
+        <!--设置圆角矩形的圆角半径-->
+        <attr name="sm_color_radius" format="integer"/>
+
+        <!--设置边框颜色和宽度-->
+        <attr name="sm_broder_color" format="color"/>
+        <!--设置透明后，border的颜色不起效果-->
+        <attr name="sm_border_is_transparent" format="boolean"/>
+        <attr name="sm_border_width" format="integer"/>
+    </declare-styleable>
+</resources>
