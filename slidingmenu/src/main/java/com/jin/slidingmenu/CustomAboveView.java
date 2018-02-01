@@ -12,7 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Shader;
-import android.support.annotation.IdRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -31,13 +31,13 @@ import com.jin.slidingmenu.paints.LogUtils;
 
 public class CustomAboveView extends View {
 
-    private Bitmap backgroudBitmap;
+    private Bitmap backgroundBitmap;
 
     private IPaint iPaint;
     private FPaint fPaint;
 
     /**
-     * 背景图片的Rectf
+     * 背景图片的RectF
      */
     private RectF bgRectF;
 
@@ -132,6 +132,7 @@ public class CustomAboveView extends View {
     private OnClickListener photoOnClickListener;
 
     private OnClickListener nickNameOnClickListener;
+
     private int startX;
     private int startY;
 
@@ -140,7 +141,6 @@ public class CustomAboveView extends View {
      * 如果用户移动距离小于这个距离，则视为点击事件。
      */
     private int minOnClickDis = 10;
-
 
     public CustomAboveView(Context context) {
         this(context, null);
@@ -171,7 +171,7 @@ public class CustomAboveView extends View {
         }
 
         //背景图片
-        backgroudBitmap = BitmapFactory.decodeResource(getResources(), bgImgId);
+        backgroundBitmap = BitmapFactory.decodeResource(getResources(), bgImgId);
 
         //用户昵称
         nickName = typedArray.getString(R.styleable.CustomAboveView_sm_nickname);
@@ -235,22 +235,21 @@ public class CustomAboveView extends View {
         }
     }
 
-
-    public Bitmap getBackgroudBitmap() {
-        return backgroudBitmap;
+    public Bitmap getBackgroundBitmap() {
+        return backgroundBitmap;
     }
 
-    public void setBackgroudBitmap(Bitmap backgroudBitmap) {
-        this.backgroudBitmap = backgroudBitmap;
+    public void setBackgroundBitmap(Bitmap backgroundBitmap) {
+        this.backgroundBitmap = backgroundBitmap;
     }
 
     public int getBgImgId() {
         return bgImgId;
     }
 
-    public void setBgImgId(int bgImgId) {
+    public void setBgImgId(@DrawableRes int bgImgId) {
         this.bgImgId = bgImgId;
-        backgroudBitmap = BitmapFactory.decodeResource(getResources(),bgImgId);
+        backgroundBitmap = BitmapFactory.decodeResource(getResources(),bgImgId);
     }
 
     public String getNickName() {
@@ -351,8 +350,8 @@ public class CustomAboveView extends View {
         handlerBitmap();
     }
 
-    public void setmPhotoBitmap(@IdRes int phtotBitmap) {
-        this.mPhotoBitmap = BitmapFactory.decodeResource(getResources(),phtotBitmap);
+    public void setmPhotoBitmap(@DrawableRes int photoBitmap) {
+        this.mPhotoBitmap = BitmapFactory.decodeResource(getResources(),photoBitmap);
         handlerBitmap();
     }
 
@@ -403,16 +402,15 @@ public class CustomAboveView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        if (backgroudBitmap != null) {
-            bgRectF.set(0,0,getWidth(), getWidth() * backgroudBitmap.getHeight()/ backgroudBitmap.getWidth());
-            canvas.drawBitmap(backgroudBitmap,null,bgRectF,iPaint);
+        if (backgroundBitmap != null) {
+            bgRectF.set(0,0,getWidth(), getWidth() * backgroundBitmap.getHeight()/ backgroundBitmap.getWidth());
+            canvas.drawBitmap(backgroundBitmap,null,bgRectF,iPaint);
         }
 
         if (nickName != null) {
             float y = fPaint.findCenterBaseY(getHeight() / 2);
             canvas.drawText(nickName,photoR * 2 + leftPadding + photoLeftMargin + photoRightMargin + nickNameLeftMargin, y,fPaint);
         }
-
 
         int startX = leftPadding;
         int startY = getHeight()/2 - photoR;
@@ -432,17 +430,16 @@ public class CustomAboveView extends View {
 
             if (mPhotoFormat == PHOTO_STYLE_CIRCLE) {
                 //绘制圆形头像框
-                cavansCirclePhoto(c,v,b);
+                canvasCirclePhoto(c,v,b);
             } else if (mPhotoFormat == PHOTO_STYLE_ROUND_RECTANGLE) {
                 //绘制矩形头像框
-                cavansRectPhoto(c,v,b);
+                canvasRectPhoto(c,v,b);
             }
-
             canvas.drawBitmap(photoBitmap,startX,startY,iPaint);
         }
     }
 
-    private void cavansRectPhoto(Canvas canvas, float[] v, float[] b) {
+    private void canvasRectPhoto(Canvas canvas, float[] v, float[] b) {
         mRectF.set(v[0], v[1], v[2], v[3]);
         canvas.drawRoundRect(mRectF,mBorderWidth,mBorderWidth,iPaint);
 
@@ -463,7 +460,7 @@ public class CustomAboveView extends View {
         }
     }
 
-    private void cavansCirclePhoto(Canvas canvas, float[] v, float[] b) {
+    private void canvasCirclePhoto(Canvas canvas, float[] v, float[] b) {
         canvas.drawCircle(v[4],v[5] ,v[6],iPaint);
         //绘制圆形头像的边框
         if (mBorderWidth > 0) {
@@ -492,13 +489,13 @@ public class CustomAboveView extends View {
     }
 
     private RectF getPhotoRectF() {
-        RectF photoRectf = new RectF();
+        RectF f = new RectF();
         int l = getLeftPadding() + getPhotoLeftMargin();
         int t = getViewHeight() / 2 - getPhotoR();
         int r = l + getPhotoR() * 2;
         int b = t + getPhotoR() * 2;
-        photoRectf.set(l,t,r,b);
-        return photoRectf;
+        f.set(l,t,r,b);
+        return f;
     }
 
     private RectF getNickNameRectF() {
@@ -519,7 +516,6 @@ public class CustomAboveView extends View {
         return !TextUtils.isEmpty(getNickName());
     }
 
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int wm = MeasureSpec.getMode(widthMeasureSpec); //1073741824 -- 1 << 30 :match_parent
@@ -534,21 +530,19 @@ public class CustomAboveView extends View {
     public boolean onTouchEvent(MotionEvent e) {
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                LogUtils.e("CustomAboveView--down");
                 startX = (int)e.getX();
                 startY = (int)e.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
-
                 break;
             case MotionEvent.ACTION_UP:
-                LogUtils.e("CustomAboveView--up");
+                LogUtils.d("CustomAboveView--up");
                 int x = (int) e.getX();
                 int y = (int) e.getY();
                 int dx = x - startX;
                 int dy = y - startY;
-                LogUtils.d("dx:%d,dy:%d",dx,dy);
-                if (Math.abs(dx) < minOnClickDis && Math.abs(dy) <minOnClickDis) {
+
+                if (Math.abs(dx) < minOnClickDis && Math.abs(dy) < minOnClickDis) {
 
                     if (photoOnClickListener != null && isPhotoExist() && getPhotoRectF().contains(x,y)) {
                         photoOnClickListener.onClick(this);
@@ -560,7 +554,6 @@ public class CustomAboveView extends View {
                 }
                 break;
         }
-        LogUtils.e("CustomAboveView--------onTouchEvent");
         return true;
     }
 
