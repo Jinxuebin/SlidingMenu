@@ -163,6 +163,12 @@ public class CustomAboveView extends View {
     }
 
     private void initAttrs(Context c, @Nullable AttributeSet attrs) {
+
+        viewHeight = px_dp_sp_tools.dp2px(c,200);
+        leftPadding = px_dp_sp_tools.dp2px(c,13);
+        photoR = px_dp_sp_tools.dp2px(c,33);
+        photoRightMargin = px_dp_sp_tools.dp2px(c, 7);
+        LogUtils.e("viewHeight: %d",viewHeight);
         TypedArray typedArray = c.obtainStyledAttributes(attrs, R.styleable.CustomAboveView);
 
         bgImgId = typedArray.getResourceId(R.styleable.CustomAboveView_sm_backgroundimg, -1);
@@ -353,6 +359,7 @@ public class CustomAboveView extends View {
     public void setmPhotoBitmap(@DrawableRes int photoBitmap) {
         this.mPhotoBitmap = BitmapFactory.decodeResource(getResources(),photoBitmap);
         handlerBitmap();
+        invalidate();
     }
 
     public Bitmap getmPhotoBitmap() {
@@ -409,7 +416,9 @@ public class CustomAboveView extends View {
 
         if (nickName != null) {
             float y = fPaint.findCenterBaseY(getHeight() / 2);
-            canvas.drawText(nickName,photoR * 2 + leftPadding + photoLeftMargin + photoRightMargin + nickNameLeftMargin, y,fPaint);
+            int r = 0;
+            if (mPhotoBitmap != null) r = photoR;
+            canvas.drawText(nickName,r * 2 + leftPadding + photoLeftMargin + photoRightMargin + nickNameLeftMargin, y,fPaint);
         }
 
         int startX = leftPadding;

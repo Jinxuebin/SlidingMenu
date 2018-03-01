@@ -85,9 +85,6 @@ public class SlidingMenu extends LinearLayout {
         }
     };
 
-    SlidingMenu that = this;
-
-
     public SlidingMenu(Context context) {
         this(context,null);
     }
@@ -113,7 +110,7 @@ public class SlidingMenu extends LinearLayout {
         //添加这两个View
         addView(customAboveView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         addView(customBlowView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        setBackgroundColor(Color.parseColor("#ffffff"));
+        setBackgroundColor(Color.parseColor("#efefef"));
     }
 
 
@@ -287,8 +284,8 @@ public class SlidingMenu extends LinearLayout {
 
     public void closeSlidingMenu(int dx) {
         if (dx <= 0 && dx >= - getWidth()) {
+            if (closeSlidingMenuAnimator != null && closeSlidingMenuAnimator.isRunning()) return;
             closeSlidingMenuAnimator = ValueAnimator.ofInt(dx, -getWidth());
-            if (closeSlidingMenuAnimator.isRunning()) return;
             closeSlidingMenuAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
@@ -323,7 +320,6 @@ public class SlidingMenu extends LinearLayout {
 
             @Override
             public void onMoveEvent(MotionEvent event, float dx, float slideDistance) {
-                LogUtils.e("slideDistance: %f",slideDistance);
                 slidingMenuOnMove(dx,slideDistance);
             }
 
